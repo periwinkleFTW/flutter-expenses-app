@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
@@ -93,20 +96,31 @@ class _NewTransactionState extends State<NewTransaction> {
                             : 'Picked Date: ${DateFormat.yMd().format(_selectedDate)}',
                       ),
                     ),
-                    FlatButton(
-                        onPressed: _presentDatePicker,
-                        textColor: Theme.of(context).primaryColor,
-                        child: Text('Choose Date...',
-                            style: TextStyle(fontWeight: FontWeight.bold)))
+                    Platform.isIOS
+                        ? CupertinoButton(
+                            child: Text('Choose Date...',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            onPressed: _presentDatePicker,
+                          )
+                        : FlatButton(
+                            onPressed: _presentDatePicker,
+                            textColor: Theme.of(context).primaryColor,
+                            child: Text('Choose Date...',
+                                style: TextStyle(fontWeight: FontWeight.bold)))
                   ],
                 ),
               ),
-              RaisedButton(
-                child: Text('Add Transaction'),
-                textColor: Theme.of(context).textTheme.button.color,
-                color: Theme.of(context).primaryColor,
-                onPressed: _submitData,
-              ),
+              Platform.isIOS
+                  ? CupertinoButton(
+                      child: Text('Add Transaction'),
+                      onPressed: _submitData,
+                    )
+                  : RaisedButton(
+                      child: Text('Add Transaction'),
+                      textColor: Theme.of(context).textTheme.button.color,
+                      color: Theme.of(context).primaryColor,
+                      onPressed: _submitData,
+                    ),
             ],
           ),
         ),
